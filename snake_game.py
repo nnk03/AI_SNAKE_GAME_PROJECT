@@ -1,3 +1,4 @@
+import adversaries
 import pygame
 import time
 import random
@@ -70,7 +71,17 @@ fruit_spawn = True
 # right
 direction = 'RIGHT'
 change_to = direction
+
+# similarly for adversaries
+direction1 = 'LEFT'
+change_to1 = direction
+
+direction2 = 'LEFT'
+change_to2 = direction
  
+direction3 = 'RIGHT'
+change_to3 = direction
+
 # initial score
 score = 0
  
@@ -121,11 +132,129 @@ def game_over():
      
     # quit the program
     quit()
- 
- 
+
+# adversaries must respawn at a place not occupied by other snakes
+def respawn(num:int):
+    inc=0
+    if num==1:
+        flag=True
+        while flag:
+            snake_1_position.clear()
+            snake_1_position.extend([window_x-100, 50+inc]);
+             
+            snake_1_body.clear()
+            snake_1_body.extend([[window_x-100, 50+inc],
+                          [window_x-90, 50+inc],
+                          [window_x-80, 50+inc],
+                          [window_x-70, 50+inc]
+                          ])
+            inc+=50
+
+            flag=False
+
+            for block in snake_body:
+                for own_block in snake_1_body:
+                    if own_block==block:
+                        flag=True
+
+            if flag:
+                continue
+
+            for block in snake_2_body:
+                for own_block in snake_1_body:
+                    if own_block==block:
+                        flag=True
+
+            if flag:
+                continue
+
+            for block in snake_3_body:
+                for own_block in snake_1_body:
+                    if own_block==block:
+                        flag=True
+
+    elif num==2:
+        flag=True
+        while flag:
+            snake_2_position.clear()
+            snake_2_position.extend([window_x-100, window_y-50-inc]);
+             
+            snake_2_body.clear()
+            snake_2_body.extend([[window_x-100, window_y-50-inc],
+              [window_x-90, window_y-50-inc],
+              [window_x-80, window_y-50-inc],
+              [window_x-70, window_y-50-inc]
+              ])
+
+            inc+=50
+
+            flag=False
+
+            for block in snake_body:
+                for own_block in snake_2_body:
+                    if own_block==block:
+                        flag=True
+
+            if flag:
+                continue
+
+            for block in snake_1_body:
+                for own_block in snake_2_body:
+                    if own_block==block:
+                        flag=True
+
+            if flag:
+                continue
+
+            for block in snake_3_body:
+                for own_block in snake_2_body:
+                    if own_block==block:
+                        flag=True
+
+    else:
+        flag=True
+        while flag:
+            snake_3_position.clear()
+            snake_3_position.extend([100, window_y-50-inc]);
+             
+            snake_3_body.clear()
+            snake_3_body.extend([[100, window_y-50-inc],
+              [90, window_y-50-inc],
+              [80, window_y-50-inc],
+              [70, window_y-50-inc]
+              ])
+
+            inc+=50
+
+            flag=False
+
+            for block in snake_body:
+                for own_block in snake_3_body:
+                    if own_block==block:
+                        flag=True
+
+            if flag:
+                continue
+
+            for block in snake_2_body:
+                for own_block in snake_3_body:
+                    if own_block==block:
+                        flag=True
+
+            if flag:
+                continue
+
+            for block in snake_1_body:
+                for own_block in snake_3_body:
+                    if own_block==block:
+                        flag=True
+
 # Main Function
 while True:
-     
+    change_to1=adversaries.manhattan(direction1,snake_1_position,fruit_position) 
+    change_to2=adversaries.manhattan(direction2,snake_2_position,fruit_position) 
+    change_to3=adversaries.manhattan(direction3,snake_3_position,fruit_position) 
+
     # handling key events
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -170,6 +299,79 @@ while True:
     else:
         snake_body.pop()
          
+    # similarly moving the adversaries 
+    if change_to1 == 'UP' and direction != 'DOWN':
+        direction1 = 'UP'
+    if change_to1 == 'DOWN' and direction != 'UP':
+        direction1 = 'DOWN'
+    if change_to1 == 'LEFT' and direction != 'RIGHT':
+        direction1 = 'LEFT'
+    if change_to1 == 'RIGHT' and direction != 'LEFT':
+        direction1 = 'RIGHT'
+
+    if direction1 == 'UP':
+        snake_1_position[1] -= 10
+    if direction1 == 'DOWN':
+        snake_1_position[1] += 10
+    if direction1 == 'LEFT':
+        snake_1_position[0] -= 10
+    if direction1 == 'RIGHT':
+        snake_1_position[0] += 10
+ 
+    snake_1_body.insert(0, list(snake_1_position))
+    if snake_1_position[0] == fruit_position[0] and snake_1_position[1] == fruit_position[1]:
+        fruit_spawn = False
+    else:
+        snake_1_body.pop()
+         
+    if change_to2 == 'UP' and direction != 'DOWN':
+        direction2 = 'UP'
+    if change_to2 == 'DOWN' and direction != 'UP':
+        direction2 = 'DOWN'
+    if change_to2 == 'LEFT' and direction != 'RIGHT':
+        direction2 = 'LEFT'
+    if change_to2 == 'RIGHT' and direction != 'LEFT':
+        direction2 = 'RIGHT'
+
+    if direction2 == 'UP':
+        snake_2_position[1] -= 10
+    if direction2 == 'DOWN':
+        snake_2_position[1] += 10
+    if direction2 == 'LEFT':
+        snake_2_position[0] -= 10
+    if direction2 == 'RIGHT':
+        snake_2_position[0] += 10
+ 
+    snake_2_body.insert(0, list(snake_2_position))
+    if snake_2_position[0] == fruit_position[0] and snake_2_position[1] == fruit_position[1]:
+        fruit_spawn = False
+    else:
+        snake_2_body.pop()
+         
+    if change_to3 == 'UP' and direction != 'DOWN':
+        direction3 = 'UP'
+    if change_to3 == 'DOWN' and direction != 'UP':
+        direction3 = 'DOWN'
+    if change_to3 == 'LEFT' and direction != 'RIGHT':
+        direction3 = 'LEFT'
+    if change_to3 == 'RIGHT' and direction != 'LEFT':
+        direction3 = 'RIGHT'
+
+    if direction3 == 'UP':
+        snake_3_position[1] -= 10
+    if direction3 == 'DOWN':
+        snake_3_position[1] += 10
+    if direction3 == 'LEFT':
+        snake_3_position[0] -= 10
+    if direction3 == 'RIGHT':
+        snake_3_position[0] += 10
+ 
+    snake_3_body.insert(0, list(snake_3_position))
+    if snake_3_position[0] == fruit_position[0] and snake_3_position[1] == fruit_position[1]:
+        fruit_spawn = False
+    else:
+        snake_3_body.pop()
+         
     if not fruit_spawn:
         fruit_position = [random.randrange(1, (window_x//10)) * 10,
                           random.randrange(1, (window_y//10)) * 10]
@@ -207,12 +409,29 @@ while True:
     if snake_position[1] < 0 or snake_position[1] > window_y-10:
         game_over()
  
+    # similarly conditions for respawn for adversaries
+    if snake_1_position[0] < 0 or snake_1_position[0] > window_x-10:
+        respawn(1)
+    if snake_1_position[1] < 0 or snake_1_position[1] > window_y-10:
+        respawn(1)
+
+    if snake_2_position[0] < 0 or snake_2_position[0] > window_x-10:
+        respawn(2)
+    if snake_2_position[1] < 0 or snake_2_position[1] > window_y-10:
+        respawn(2)
+
+    if snake_3_position[0] < 0 or snake_3_position[0] > window_x-10:
+        respawn(3)
+    if snake_3_position[1] < 0 or snake_3_position[1] > window_y-10:
+        respawn(3)
+
     # omitting this part as this will be a multi-player game
     # Touching the snake body
     # for block in snake_body[1:]:
     #     if snake_position[0] == block[0] and snake_position[1] == block[1]:
     #         game_over()
  
+    # if snake hits against an adversary's body then the game is over
     for block in snake_1_body:
          if snake_position[0] == block[0] and snake_position[1] == block[1]:
              game_over()
@@ -224,6 +443,43 @@ while True:
     for block in snake_3_body:
          if snake_position[0] == block[0] and snake_position[1] == block[1]:
              game_over()
+
+    # similarly for the adversary snakes as well. But the adversaries respawn with the initial length
+    for block in snake_body:
+         if snake_1_position[0] == block[0] and snake_1_position[1] == block[1]:
+             respawn(1)
+
+    for block in snake_2_body:
+         if snake_1_position[0] == block[0] and snake_1_position[1] == block[1]:
+             respawn(1)
+
+    for block in snake_3_body:
+         if snake_1_position[0] == block[0] and snake_1_position[1] == block[1]:
+             respawn(1)
+
+    for block in snake_1_body:
+         if snake_2_position[0] == block[0] and snake_2_position[1] == block[1]:
+             respawn(2)
+
+    for block in snake_body:
+         if snake_2_position[0] == block[0] and snake_2_position[1] == block[1]:
+             respawn(2)
+
+    for block in snake_3_body:
+         if snake_2_position[0] == block[0] and snake_2_position[1] == block[1]:
+             respawn(2)
+
+    for block in snake_1_body:
+         if snake_3_position[0] == block[0] and snake_3_position[1] == block[1]:
+             respawn(3)
+
+    for block in snake_2_body:
+         if snake_3_position[0] == block[0] and snake_3_position[1] == block[1]:
+             respawn(3)
+
+    for block in snake_body:
+         if snake_3_position[0] == block[0] and snake_3_position[1] == block[1]:
+             respawn(3)
 
     # displaying score continuously
     show_score(1, white, 'times new roman', 20)
