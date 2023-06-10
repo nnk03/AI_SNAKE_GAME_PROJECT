@@ -111,7 +111,10 @@ def safe_manhattan(direction,snake_position,fruit_position,snake_1_body,snake_2_
             else:
                 available_moves.remove("LEFT")
 
-        return available_moves[0] # can produce a run-time error in a highly unlikely situation when the agent is surrounded all three adversaries
+        if available_moves:
+            return available_moves[0]
+        else:
+            return direction
 
     elif direction=="DOWN":
         available_moves=["DOWN","RIGHT","LEFT"]
@@ -210,7 +213,10 @@ def safe_manhattan(direction,snake_position,fruit_position,snake_1_body,snake_2_
             else:
                 available_moves.remove("LEFT")
 
-        return available_moves[0] # can produce a run-time error in a highly unlikely situation when the agent is surrounded all three adversaries
+        if available_moves:
+            return available_moves[0]
+        else:
+            return direction
 
     elif direction=="LEFT":
         
@@ -310,7 +316,10 @@ def safe_manhattan(direction,snake_position,fruit_position,snake_1_body,snake_2_
             else:
                 available_moves.remove("UP")
 
-        return available_moves[0] # can produce a run-time error in a highly unlikely situation when the agent is surrounded all three adversaries
+        if available_moves:
+            return available_moves[0]
+        else:
+            return direction
 
     else:
         available_moves=["DOWN","UP","RIGHT"]
@@ -409,4 +418,7 @@ def safe_manhattan(direction,snake_position,fruit_position,snake_1_body,snake_2_
             else:
                 available_moves.remove("UP")
 
-        return available_moves[0] # can produce a run-time error in a highly unlikely situation when the agent is surrounded all three adversaries
+        if available_moves:
+            return available_moves[0]
+        else:
+            return direction
