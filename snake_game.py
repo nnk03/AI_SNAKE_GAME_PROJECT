@@ -1,7 +1,8 @@
-import adversaries
 import pygame
 import time
 import random
+import agent
+import adversaries
  
 snake_speed = 15
  
@@ -256,17 +257,18 @@ while True:
     change_to3=adversaries.manhattan(direction3,snake_3_position,fruit_position) 
 
     # handling key events
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                change_to = 'UP'
-            if event.key == pygame.K_DOWN:
-                change_to = 'DOWN'
-            if event.key == pygame.K_LEFT:
-                change_to = 'LEFT'
-            if event.key == pygame.K_RIGHT:
-                change_to = 'RIGHT'
+    # for event in pygame.event.get():
+    #     if event.type == pygame.KEYDOWN:
+    #         if event.key == pygame.K_UP:
+    #             change_to = 'UP'
+    #         if event.key == pygame.K_DOWN:
+    #             change_to = 'DOWN'
+    #         if event.key == pygame.K_LEFT:
+    #             change_to = 'LEFT'
+    #         if event.key == pygame.K_RIGHT:
+    #             change_to = 'RIGHT'
  
+    change_to=agent.safe_manhattan(direction,snake_position,fruit_position,snake_1_body,snake_2_body,snake_3_body,window_x,window_y)
     # If two keys pressed simultaneously
     # we don't want snake to move into two
     # directions simultaneously
